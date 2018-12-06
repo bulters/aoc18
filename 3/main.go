@@ -52,22 +52,26 @@ func countOverclaim(field map[int]map[int][]int) int {
 }
 
 func findNoOverlap(field map[int]map[int][]int, claims map[int]bool) int {
-	for _, row := range field {
-    		for _, claim := range row {
-        		for _, c := range claim {
-        			claims[c] = false
-        		}
-    		}
-	}
+    c := -1
+    for _, r := range field {
+        for _, claim := range r {
+		if len(claim) > 1 {
+			for _, claimid := range claim {
+				claims[claimid] = false
+			}
+		}
+        }
+    }
 
-	c := -1
-	for claim, claimed := range claims {
-    		if claimed {
-        		c = claim
-    		}
+    for claim, claimed := range claims {
+        fmt.Println(claim, claimed)
+	if claimed {
+    		c = claim
 	}
+    }
 
-	return c
+    return c
+
 }
 
 func parseLine(s string) (int, int, int, int, int) {
